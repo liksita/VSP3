@@ -66,6 +66,10 @@ public class Player {
         return position;
     }
 
+    public boolean getReady() {
+        return this.ready;
+    }
+
     // ===========================
     // Setter's
     // ===========================
@@ -79,10 +83,6 @@ public class Player {
 
     public void setReady() {
         this.ready = true;
-    }
-
-    public boolean getReady() {
-        return this.ready;
     }
 
     // ===========================

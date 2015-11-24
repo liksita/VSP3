@@ -70,7 +70,7 @@ public class Game {
         this.components = components;
     }
 
-    public boolean isStarted() {
+    public boolean readyToStart() {
         if (players.size() <= 2) {
             return false;
         } else if (started) {
@@ -80,7 +80,7 @@ public class Game {
                 if (!player.getReady()) return false;
             }
         }
-
+        
         started = true;
         return started;
     }

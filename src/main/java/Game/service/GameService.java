@@ -2,15 +2,13 @@ package Game.service;
 
 import Game.model.Game;
 import Player.model.Player;
+import com.mashape.unirest.http.Unirest;
 
 import java.util.ArrayList;
-
-//import com.sun.tools.javac.util.List;
 
 public class GameService {
     private static int gameID = 0;
     private static ArrayList<Game> games = new ArrayList<>();
-
 
     public static String getNextGameID() {
         return String.valueOf(gameID++);
@@ -20,22 +18,11 @@ public class GameService {
         String neugameID = getNextGameID();
         Game game = new Game(neugameID);
         games.add(game);
+
         return game;
     }
 
     public Game findGame(String gameID) {
-
-        // мой вариант
-
-        /*
-        //gameID prüfen.
-        Integer igameID = Integer.getInteger(gameID);
-        if(igameID != null){
-            return games.get(igameID);
-        }
-        */
-
-
         for (Game game : games) {
             if (game.getGameID().equals(gameID)) return game;
         }
@@ -53,13 +40,27 @@ public class GameService {
         return null;
     }
 
-    public Player setPlayerReady(String gameId, String playerId) {
+    public Player getPlayer(String gameId, String playerId){
         Game game = findGame(gameId);
 
         for (Player player : game.getPlayers()) {
             if (player.getPlayerID().equals(playerId)) {
-                player.setReady();
                 return player;
+            }
+        }
+        return null;
+    }
+
+    public Player setPlayerReady(String gameId, String playerId) {
+        Game game = findGame(gameId);
+        boolean gameIsStarted = game.readyToStart();
+
+        if(!gameIsStarted) {
+            Player player = getPlayer(gameId, playerId);
+            player.setReady();
+            gameIsStarted = game.readyToStart();
+            if(gameIsStarted){
+                Unirest.post("http://0.0.0.0/banks/"+gameId);
             }
         }
         return null;
@@ -67,5 +68,10 @@ public class GameService {
 
     public ArrayList<Game> getGames() {
         return games;
+    }
+
+    public void isReady(String params) {
+        Game game = findGame(params);
+
     }
 }

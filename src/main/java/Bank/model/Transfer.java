@@ -19,8 +19,33 @@ public class Transfer {
     private String transferID;
     private String from;
     private String to;
-    private String resource;
+    private int amount;
+    private String reason;
     private String event;
+
+    public Transfer(String from, String to, int amount, String reason, String event) {
+        this.from = from;
+    }
+
+    public String getTransferID() {
+        return transferID;
+    }
+
+    public String getFrom() {
+        return from;
+    }
+
+    public String getTo() {
+        return to;
+    }
+
+    public String getReason() {
+        return reason;
+    }
+
+    public String getEvent() {
+        return event;
+    }
 
     public String getID() {
         return transferID;

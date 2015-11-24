@@ -1,7 +1,5 @@
 package Player.model;
 
-import model.Place;
-
 /**
  *
  * - player: |

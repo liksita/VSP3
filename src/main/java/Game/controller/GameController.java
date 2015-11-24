@@ -5,6 +5,9 @@ import Game.model.Game;
 import Player.model.Player;
 import Game.service.GameService;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+
 import static spark.Spark.*;
 import static util.JsonUtil.json;
 
@@ -12,7 +15,7 @@ import static util.JsonUtil.json;
 
 public class GameController {
 
-    public GameController(final GameService gameService) {
+    public GameController(final GameService gameService, HashMap<String, String> services) {
 
         after((req, res) -> {
             res.type("application/json");
@@ -64,6 +67,7 @@ public class GameController {
             }
 
             // wurde geklappt
+            res.status(200);
             return game;
         }, json());
 

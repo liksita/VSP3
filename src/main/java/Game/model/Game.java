@@ -31,7 +31,7 @@ public class Game {
     private List<Player> players;
     private Components components = null;
     private boolean started = false;
-    private int nowPlaying = 0;
+    private int trowNow = 0;
 
     public Game(String gameID, ArrayList<Player> players, Components components) {
         this.gameID = gameID;
@@ -79,18 +79,17 @@ public class Game {
                 if (!player.getReady()) return false;
             }
         }
-        
         started = true;
         return started;
     }
 
     public int getPlayer() {
-        return nowPlaying;
+        return trowNow;
     }
 
     public void setNextPlayer() {
-        nowPlaying++;
-        if (nowPlaying >= players.size()) nowPlaying = 0;
+        trowNow++;
+        if (trowNow >= players.size()) trowNow = 0;
     }
 }
 

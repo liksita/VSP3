@@ -1,12 +1,12 @@
-package service;
+package Dice.controller;
 import com.google.gson.Gson;
-import model.Dice;
+import Dice.model.Dice;
 
 import static spark.Spark.get;
 /**
  * Created by diana on 01.11.15.
  */
-public class DiceService {
+public class DiceController {
 
     private static Gson gson = new Gson();
     private static Dice dice = new Dice();

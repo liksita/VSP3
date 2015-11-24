@@ -1,9 +1,9 @@
-package controller;
+package Game.controller;
 
 import errors.ResponseError;
-import model.Game;
-import model.Player;
-import service.GameService;
+import Game.model.Game;
+import Player.model.Player;
+import Game.service.GameService;
 
 import static spark.Spark.*;
 import static util.JsonUtil.json;
@@ -26,7 +26,7 @@ public class GameController {
         get("/games", (req, res) -> gameService.getGames(), json());
 
         // spielstand ausgeben
-        get("/games/:gameidput", (req, res) -> {
+        get("/games/:gameid", (req, res) -> {
             //prüfe ob spiel exiestiert
             Game game = gameService.findGame(req.params(":gameid"));
             if (game == null) {
@@ -43,6 +43,9 @@ public class GameController {
         // Benutzer können mit dem Client ein neues Spiel eröffnen = post /games
         post("/games", (req, res) -> gameService.createGame(), json());
 
+        //===========================================================
+        // PUT's
+        //===========================================================
         // Benutzer können sich mit dem Client als Spieler registrieren =  put /games/{gameid}/players/{playerid}
         put("/games/:gameid/players/:playerid", (req, res) -> {
 
@@ -69,9 +72,7 @@ public class GameController {
             return game;
         }, json());
 
-        //===========================================================
-        // PUT's
-        //===========================================================
+
         // Benutzer können mit dem Client melden, dass sie fertig sind und das Spiel losgehen kann
         put("/games/:gameid/players/:playerid/ready", (req, res) -> {
             //prüfe ob spiel exiestiert
@@ -89,6 +90,7 @@ public class GameController {
             }
 
             //prüfe ob alle ready sind
+            game.isStarted();
             return player;
 
         }, json());

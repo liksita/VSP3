@@ -1,4 +1,6 @@
-package model;
+package Player.model;
+
+import model.Place;
 
 /**
  *
@@ -18,8 +20,6 @@ package model;
      }
  example: |
      [{ id:mario, name:"Mario", uri:"http://localhost:4567/player/mario", ready:false }]
- *
- *
  */
 public class Player {
     String playerID;

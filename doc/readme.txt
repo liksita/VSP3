@@ -1,3 +1,14 @@
+==========================================================
+Link's:
+Aufgabe 2
+https://pub.informatik.haw-hamburg.de/home/pub/prof/kossakowski_klaus-peter/wise2015/verteiltesysteme/VSAI-wise2015-Aufgabe-2.pdf
+
+PUB/Kossakowski
+https://pub.informatik.haw-hamburg.de/home/pub/prof/kossakowski_klaus-peter/wise2015/verteiltesysteme/
+
+Building a simple RESTful API with Spark
+http://www.mscharhag.com/java/building-rest-api-with-spark
+===========================================================
 сделал сегодня мало
 
 1) чо-то я никак не соображу как начать игру, если все зареганные:

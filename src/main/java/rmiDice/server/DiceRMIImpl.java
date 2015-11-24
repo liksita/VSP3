@@ -27,7 +27,6 @@ public class DiceRMIImpl extends UnicastRemoteObject implements DiceRMI {
         try {
             LocateRegistry.createRegistry(Registry.REGISTRY_PORT);
             DiceRMI service = new DiceRMIImpl();
-          //  System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! Port " + Registry.REGISTRY_PORT);
             Naming.rebind("RemoteRoll", service);
         } catch (Exception e) {
             e.printStackTrace();

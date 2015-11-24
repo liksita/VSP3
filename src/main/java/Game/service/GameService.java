@@ -1,7 +1,7 @@
-package service;
+package Game.service;
 
-import model.Game;
-import model.Player;
+import Game.model.Game;
+import Player.model.Player;
 
 import java.util.ArrayList;
 

@@ -1,4 +1,7 @@
-package model;
+package Game.model;
+
+import model.Components;
+import Player.model.Player;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,9 +31,8 @@ public class Game {
     private String gameID;
     private List<Player> players;
     private Components components = null;
-    private boolean currentGameIsStarted = false;
+    private boolean started = false;
     private int nowPlaying = 0;
-
 
     public Game(String gameID, ArrayList<Player> players, Components components) {
         this.gameID = gameID;
@@ -69,14 +71,18 @@ public class Game {
     }
 
     public boolean isStarted() {
-        if (currentGameIsStarted) return true;
-
-        for ( Player player : players ) {
-            if(!player.getReady()) return false;
+        if (players.size() <= 2) {
+            return false;
+        } else if (started) {
+            return true;
+        } else {
+            for (Player player : players) {
+                if (!player.getReady()) return false;
+            }
         }
 
-        currentGameIsStarted = true;
-        return true;
+        started = true;
+        return started;
     }
 
     public int getPlayer() {
@@ -85,8 +91,7 @@ public class Game {
 
     public void setNextPlayer() {
         nowPlaying++;
-        if(nowPlaying > players.size()) nowPlaying = 0;
+        if (nowPlaying >= players.size()) nowPlaying = 0;
     }
-
 }
 

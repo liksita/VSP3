@@ -12,26 +12,38 @@ import java.util.LinkedHashMap;
  * Created by m on 24.11.15.
  */
 public class BankService {
-    private HashMap<String, Bank> banks       = new LinkedHashMap<>();
-    private HashMap<String, Account> accounts = new LinkedHashMap<>();
-    private ArrayList<Transfer> transfers     = new ArrayList<>();
+    private HashMap<String, Bank> banks = new LinkedHashMap<>();
+
+    public Bank createBank(String gameID) {
+        if (findBank(gameID) == null){
+            return null;
+        }
+
+        Bank bank = new Bank(gameID);
+        banks.put(gameID, bank);
+        return bank;
+    }
 
     public Bank findBank(String gameID) {
         return banks.get(gameID);
     }
 
-    public ArrayList<Transfer> getTransfers() {
-        return transfers;
+    public ArrayList<Transfer> getTransfers(String gameID) {
+        Bank bank = findBank(gameID);
+        return bank.getTransfers();
     }
 
-    public Transfer findTransfers(String transferID) {
-        for (Transfer transfer :transfers) {
-            if(transfer.getID().equals(transferID)) return transfer;
+    public Transfer findTransfer(Bank bank, String transferID) {
+        ArrayList<Transfer> transfers = bank.getTransfers();
+
+        for (Transfer transfer : transfers) {
+            if (transfer.getID().equals(transferID)) return transfer;
         }
         return null;
     }
 
-    public Transfer transferFromTo(String from, String to, String amount) {
+    public Transfer transferFromTo(Bank bank, String from, String to, String amount) {
         return null;
     }
+
 }

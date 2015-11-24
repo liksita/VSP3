@@ -5,6 +5,8 @@ import Bank.model.Transfer;
 import Bank.service.BankService;
 import errors.ResponseError;
 
+import java.util.ArrayList;
+
 import static spark.Spark.*;
 import static util.JsonUtil.json;
 
@@ -59,6 +61,7 @@ public class BankController {
         // Bank's
         //===========================================================
         get("/banks/:gameid", (req, res) -> {
+            // Bank !exist?
             Bank bank = bankService.findBank(req.params(":gameid"));
             if (bank == null) {
                 res.status(400);
@@ -68,23 +71,40 @@ public class BankController {
         }, json());
 
         put("/banks/:gameid", (req, res) -> {
-            Bank bank = bankService.findBank(req.params(":gameid"));
-            if (bank != null) {
+            // ToDo проверка - игра существует?
+
+            // Bank exist?
+            Bank bank = bankService.createBank(req.params(":gameid"));
+            if (bank == null) {
                 res.status(400);
                 return new ResponseError(":( wrong gameID");
             }
+
             return bank;
         }, json());
 
         //===========================================================
         // Transfer's
         //===========================================================
-        get("/banks/transfers", (req, res) -> {
-            return bankService.getTransfers();
+        get("/banks/:gameid/transfers", (req, res) -> {
+            ArrayList<Transfer> transfers = bankService.getTransfers(req.params(":gameid"));
+            if (transfers == null){
+                res.status(400);
+                return new ResponseError(":( wrong gameID");
+            }
+            return transfers;
         }, json());
 
-        get("/banks/transfers/:transferid", (req, res) -> {
-            Transfer transfer = bankService.findTransfers(req.params(":transferid"));
+        get("/banks/:gameid/transfers/:transferid", (req, res) -> {
+            // Bank exist?
+            Bank bank = bankService.createBank(req.params(":gameid"));
+            if (bank == null) {
+                res.status(400);
+                return new ResponseError(":( wrong gameID");
+            }
+
+            // transferid correct
+            Transfer transfer = bankService.findTransfer(bank, req.params(":transferid"));
             if(transfer== null){
                 res.status(400);
                 return new ResponseError(":( wrong transferID");
@@ -92,8 +112,18 @@ public class BankController {
             return transfer;
         }, json());
 
-        post("/transfer/from/:from/to/:to/:amount", (req, res) -> {
-            Transfer transfer = bankService.transferFromTo(req.params(":transferid"), req.params(":to"),req.params(":amount"));
+        post("//banks/:gameid/transfer/from/:from/to/:to/:amount", (req, res) -> {
+            // Bank exist?
+            Bank bank = bankService.createBank(req.params(":gameid"));
+            if (bank == null) {
+                res.status(400);
+                return new ResponseError(":( wrong gameID");
+            }
+
+            // from & to correct?
+
+
+            Transfer transfer = bankService.transferFromTo(bank, req.params(":from"), req.params(":to"),req.params(":amount"));
             if(transfer== null){
                 res.status(400);
                 return new ResponseError(":( wrong transferID");

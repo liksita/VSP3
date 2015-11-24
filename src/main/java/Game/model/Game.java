@@ -1,6 +1,5 @@
 package Game.model;
 
-import model.Components;
 import Player.model.Player;
 
 import java.util.ArrayList;

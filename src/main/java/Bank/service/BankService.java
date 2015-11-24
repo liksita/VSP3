@@ -1,31 +1,24 @@
 package Bank.service;
 
-import Bank.model.Account;
 import Bank.model.Bank;
 import Bank.model.Transfer;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
 
 /**
  * Created by m on 24.11.15.
  */
 public class BankService {
-    private HashMap<String, Bank> banks = new LinkedHashMap<>();
+    private ArrayList<Bank> banks = new ArrayList<>();
 
-    public Bank createBank(String gameID) {
-        if (findBank(gameID) == null){
-            return null;
-        }
-
-        Bank bank = new Bank(gameID);
-        banks.put(gameID, bank);
-        return bank;
-    }
 
     public Bank findBank(String gameID) {
-        return banks.get(gameID);
+        for (Bank bank : banks) {
+            if (bank.getBankID().equals(gameID)) {
+                return bank;
+            }
+        }
+        return null;
     }
 
     public ArrayList<Transfer> getTransfers(String gameID) {
@@ -33,17 +26,32 @@ public class BankService {
         return bank.getTransfers();
     }
 
-    public Transfer findTransfer(Bank bank, String transferID) {
-        ArrayList<Transfer> transfers = bank.getTransfers();
+    public ArrayList<Bank> getBanks() {
+        return banks;
+    }
 
-        for (Transfer transfer : transfers) {
-            if (transfer.getID().equals(transferID)) return transfer;
+    public Bank createBank(String gameID) {
+
+        Bank bank = new Bank(gameID);
+        banks.add(bank);
+        return bank;
+    }
+
+//    public HashMap<String, Account> getAccounts() {
+//        return accounts;
+//    }
+
+    public Transfer findTransfers(String gameID, String transferID) {
+
+        for (Transfer transfer : getTransfers(gameID)) {
+            if(transfer.getID().equals(transferID)) return transfer;
         }
         return null;
     }
 
-    public Transfer transferFromTo(Bank bank, String from, String to, String amount) {
+    public Transfer transferFromTo(String gameID, String from, String to, String amount) {
+        Bank bank = findBank(gameID);
+
         return null;
     }
-
 }

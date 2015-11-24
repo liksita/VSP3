@@ -2,7 +2,7 @@ package rmiDice.client;
 
 /**
  * Created by diana on 01.11.15.
- */
+  */
 import rmiDice.server.DiceRMI;
 
 import java.rmi.Naming;

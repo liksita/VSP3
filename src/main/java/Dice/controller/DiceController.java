@@ -13,8 +13,7 @@ public class DiceController {
 
     public static void main( String[] args) {
         get("/dice", (req, res) -> {
-            dice.roll();
-            return dice;
+            return  dice.roll();
         }, gson::toJson);
     }
 }

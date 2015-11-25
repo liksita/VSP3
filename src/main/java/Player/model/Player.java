@@ -1,5 +1,7 @@
 package Player.model;
 
+import Boards.modell.Place;
+
 /**
  *
  * - player: |

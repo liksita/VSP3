@@ -3,7 +3,9 @@ package Game.service;
 import Game.model.Game;
 import Player.model.Player;
 import com.mashape.unirest.http.Unirest;
+import util.SettingsReader;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -12,19 +14,21 @@ public class GameService {
     private static ArrayList<Game> games = new ArrayList<>();
     private HashMap<String, String> services = new HashMap<>();
 
-    public GameService(HashMap<String, String> services) {
-        this.services = services;
-    }
-
+    //==================================================================
+    // Game's
+    //==================================================================
     public static String getNextGameID() {
         return String.valueOf(gameID++);
+    }
+
+    public ArrayList<Game> getGames() {
+        return games;
     }
 
     public Game createGame() {
         String neugameID = getNextGameID();
         Game game = new Game(neugameID);
         games.add(game);
-
         return game;
     }
 
@@ -35,50 +39,47 @@ public class GameService {
         return null;
     }
 
-    public Game addPlayer(String gameId, String playerId) {
+    //==================================================================
+    // Player
+    //==================================================================
+    public Game addPlayer(String gameId, String playerID) {
         Game game = findGame(gameId);
-        Player player = new Player(playerId);
-
-        if (!game.contains(player)) {
-            game.addPlayer(player);
+        if (game.addPlayer(playerID)) {
             return game;
         }
+        //player exist
         return null;
     }
 
     public Player getPlayer(String gameId, String playerId) {
         Game game = findGame(gameId);
+        return game.getPlayer(playerId);
+    }
 
-        for (Player player : game.getPlayers()) {
-            if (player.getPlayerID().equals(playerId)) {
+    public Player setPlayerReady(String gameId, String playerId) {
+        Game game = findGame(gameId);
+
+        // wenn spiel nicht gestartet ist, dann registriere player als "ready"
+        if (!game.readyToStart()) {
+            Player player = getPlayer(gameId, playerId);
+            player.setReady();
+            //prüffe, ob der player, der letzte "ready"-player ist. wenn ja, dann kann Spiel starten
+            if (game.readyToStart()) {
+                //inizialisiere bank
+                try {
+                    //read banks uri from settings.txt
+                    Unirest.post(SettingsReader.getSetting("banks") + "/" + gameId + "/players");
+                } catch (IOException e) {
+                    return null;
+                }
                 return player;
             }
         }
         return null;
     }
 
-    public Player setPlayerReady(String gameId, String playerId) {
-        Game game = findGame(gameId);
-        boolean gameIsStarted = game.readyToStart();
-
-        if (!gameIsStarted) {
-            Player player = getPlayer(gameId, playerId);
-            player.setReady();
-            gameIsStarted = game.readyToStart();
-            if (gameIsStarted) {
-                String banksuri = services.get("banks");
-                Unirest.post(banksuri + "/" + gameId);
-            }
-        }
-        return null;
-    }
-
-    public ArrayList<Game> getGames() {
-        return games;
-    }
-
-    public void isReady(String params) {
-        Game game = findGame(params);
-
+    public boolean deletePlayer(String gameID, String playerID) {
+        Game game = findGame(gameID);
+        return game.deletePlayer(playerID);
     }
 }

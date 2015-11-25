@@ -31,7 +31,6 @@ public class Game {
     private List<Player> players;
     private Components components = null;
     private boolean started = false;
-    private int trowNow = 0;
 
     public Game(String gameID, ArrayList<Player> players, Components components) {
         this.gameID = gameID;
@@ -48,27 +47,6 @@ public class Game {
         return gameID;
     }
 
-    public void addPlayer(Player player) {
-        this.players.add(player);
-    }
-
-    public List<Player> getPlayers() {
-        return players;
-    }
-
-    public boolean contains(Player player) {
-        return players.contains(player);
-    }
-
-
-    public Components getComponents() {
-        return components;
-    }
-
-    public void setComponents(Components components) {
-        this.components = components;
-    }
-
     public boolean readyToStart() {
         if (players.size() <= 2) {
             return false;
@@ -83,13 +61,46 @@ public class Game {
         return started;
     }
 
-    public int getPlayer() {
-        return trowNow;
+    //==================================================================
+    // Player
+    //==================================================================
+
+    public List<Player> getPlayers() {
+        return players;
     }
 
-    public void setNextPlayer() {
-        trowNow++;
-        if (trowNow >= players.size()) trowNow = 0;
+    public boolean addPlayer(String playerID) {
+        if (getPlayer(playerID) == null) {
+            players.add(new Player(playerID));
+            return true;
+        }
+        return false;
     }
+
+    public Player getPlayer(String playerID){
+        for (Player player : getPlayers()) {
+            if (player.getPlayerID().equals(playerID)) {
+                return player;
+            }
+        }
+        return null;
+    }
+
+    public boolean deletePlayer(String playerID) {
+        Player player = getPlayer(playerID);
+        return players.remove(player);
+    }
+
+    //==================================================================
+    // Components
+    //==================================================================
+    public Components getComponents() {
+        return components;
+    }
+
+    public void setComponents(Components components) {
+        this.components = components;
+    }
+
 }
 

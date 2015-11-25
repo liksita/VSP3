@@ -8,6 +8,17 @@ https://pub.informatik.haw-hamburg.de/home/pub/prof/kossakowski_klaus-peter/wise
 
 Building a simple RESTful API with Spark
 http://www.mscharhag.com/java/building-rest-api-with-spark
+
+===========================================================
+Github's
+
+https://github.com/kumpelblase2/vs-2
+https://github.com/Slaan/vsp/
+https://github.com/motation/VS
+https://github.com/iNaD/vsp
+https://github.com/Octav14n/VSP
+https://github.com/d-is/Monopoly
+
 ===========================================================
 сделал сегодня мало
 

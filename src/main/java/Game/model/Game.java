@@ -1,7 +1,5 @@
 package Game.model;
 
-import Player.model.Player;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -48,7 +46,7 @@ public class Game {
     }
 
     public boolean readyToStart() {
-        if (players.size() <= 2) {
+        if (players.size() < 2) {
             return false;
         } else if (started) {
             return true;

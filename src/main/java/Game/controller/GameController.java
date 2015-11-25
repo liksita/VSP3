@@ -2,7 +2,7 @@ package Game.controller;
 
 import errors.ResponseError;
 import Game.model.Game;
-import Player.model.Player;
+import Game.model.Player;
 import Game.service.GameService;
 
 import static spark.Spark.*;
@@ -86,12 +86,6 @@ public class GameController {
             if(game.readyToStart()){
                 res.status(400);
                 return new ResponseError(":( game is started");
-            }
-
-            // player exist?
-            Player player = gameService.getPlayer(req.params(":gameid"),req.params("playerid"));
-            if(player == null){
-                return new ResponseError(":( wrong playerId");
             }
 
             // prüfe ob spieler mit gleiche ID schon registriert ist

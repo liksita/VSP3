@@ -7,6 +7,8 @@ import Game.service.GameService;
 public class GameApplication {
 
     public static void main(String[] args){
+
         new GameController(new GameService());
+       // new BankController(new BankService());
     }
 }

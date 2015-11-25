@@ -1,13 +1,12 @@
 package Game.service;
 
 import Game.model.Game;
-import Player.model.Player;
-import com.mashape.unirest.http.Unirest;
-import util.SettingsReader;
+import Game.model.Player;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+
+import static Game.model.Game.*;
 
 public class GameService {
     private static int gameID = 0;
@@ -47,7 +46,7 @@ public class GameService {
         if (game.addPlayer(playerID)) {
             return game;
         }
-        //player exist
+        // player exist
         return null;
     }
 
@@ -66,14 +65,9 @@ public class GameService {
             //prüffe, ob der player, der letzte "ready"-player ist. wenn ja, dann kann Spiel starten
             if (game.readyToStart()) {
                 //inizialisiere bank
-                try {
-                    //read banks uri from settings.txt
-                    Unirest.post(SettingsReader.getSetting("banks") + "/" + gameId + "/players");
-                } catch (IOException e) {
-                    return null;
-                }
-                return player;
+                // Creates a bank account's
             }
+            return player;
         }
         return null;
     }

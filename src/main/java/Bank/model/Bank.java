@@ -15,7 +15,7 @@ import java.util.ArrayList;
  */
 public class Bank {
     private String bankID;
-    private ArrayList<Transfer> transfers;
+    private ArrayList<Transfer> transfers = new ArrayList<>();
 //    private HashMap<String, Account> accounts = new LinkedHashMap<>();
 
     public Bank(String bankID) {
@@ -27,8 +27,8 @@ public class Bank {
         return transfers;
     }
 
-    public void addTransfer() {
-
+    public void addTransfer(Transfer t) {
+        this.transfers.add(t);
     }
 
     public String getBankID() {

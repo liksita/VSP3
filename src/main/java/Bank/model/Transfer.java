@@ -25,6 +25,10 @@ public class Transfer {
 
     public Transfer(String from, String to, int amount, String reason, String event) {
         this.from = from;
+        this.to = to;
+        this.amount = amount;
+        this.reason = reason;
+        this.event = event;
     }
 
     public String getTransferID() {

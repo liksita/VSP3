@@ -1,32 +1,26 @@
 package Bank.service;
 
-import Bank.model.Account;
 import Bank.model.Bank;
 import Bank.model.Transfer;
+import com.mashape.unirest.http.HttpResponse;
+import com.mashape.unirest.http.JsonNode;
+import com.mashape.unirest.http.Unirest;
+import com.mashape.unirest.http.exceptions.UnirestException;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
 
 /**
  * Created by m on 24.11.15.
  */
 public class BankService {
+    private ArrayList<Bank> banks = new ArrayList<>();
 
-    private static  ArrayList<Bank> banks = new ArrayList<>();
-
-    public Bank createBank(String gameID) {
-        if (findBank(gameID) == null){
-            Bank bank = new Bank(gameID);
-            banks.add(bank);
-            return bank;
-        }
-        return null;
-    }
 
     public Bank findBank(String gameID) {
-        for (Bank bank: banks) {
-            if (bank.getBankID().equals(gameID)) return bank;
+        for (Bank bank : banks) {
+            if (bank.getBankID().equals(gameID)) {
+                return bank;
+            }
         }
         return null;
     }
@@ -36,16 +30,48 @@ public class BankService {
         return bank.getTransfers();
     }
 
-    public Transfer findTransfer(Bank bank, String transferID) {
-        ArrayList<Transfer> transfers = bank.getTransfers();
+    public ArrayList<Bank> getBanks() {
+        return banks;
+    }
 
-        for (Transfer transfer : transfers) {
-            if (transfer.getID().equals(transferID)) return transfer;
+    public Bank createBank(String gameID) {
+
+        Bank bank = new Bank(gameID);
+        banks.add(bank);
+        return bank;
+    }
+
+//    public HashMap<String, Account> getAccounts() {
+//        return accounts;
+//    }
+
+    public Transfer findTransfers(String gameID, String transferID) {
+
+        for (Transfer transfer : getTransfers(gameID)) {
+            if(transfer.getID().equals(transferID)) return transfer;
         }
         return null;
     }
 
-    public ArrayList<Bank> getBanks() {
-        return banks;
+    public Transfer transferFromTo(String gameID, String from, String to, String amount, String reason) {
+        Bank bank = findBank(gameID);
+        int amountValue = Integer.parseInt(amount);
+        //player from, to test
+        Transfer transfer = new Transfer(from, to, amountValue, reason, "event");
+        bank.addTransfer(transfer);
+        return transfer;
+    }
+
+    public String getPlayers(String gameID) {
+        HttpResponse<JsonNode> players = null;
+        try {
+            players = Unirest.get("http://localhost:4567/games" + gameID + "/players").asJson();
+        } catch (UnirestException e) {
+            e.printStackTrace();
+        }
+        if (players != null) {
+            return players.getBody().toString();
+        }
+        return null;
     }
 }

@@ -3,8 +3,13 @@ package Bank.controller;
 import Bank.model.Bank;
 import Bank.model.Transfer;
 import Bank.service.BankService;
+import Player.model.Player;
+import com.mashape.unirest.http.HttpResponse;
+import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.Unirest;
 import errors.ResponseError;
+
+import java.util.ArrayList;
 
 import static spark.Spark.*;
 import static util.JsonUtil.json;
@@ -90,10 +95,9 @@ public class BankController {
             // if game exists
 
 
-
             String gamesStr = Unirest.get("http://localhost:4567/games" + gameID).toString();
             if (!gamesStr.isEmpty()) {
-               return bankService.createBank(gameID);
+                return bankService.createBank(gameID);
             }
 
 
@@ -104,7 +108,7 @@ public class BankController {
 
 
         //===========================================================
-        // Bank's
+        // Gets a banks
         //===========================================================
         get("/banks/:gameid", (req, res) -> {
             Bank bank = bankService.findBank(req.params(":gameid"));
@@ -112,6 +116,7 @@ public class BankController {
                 res.status(400);
                 return new ResponseError(":( wrong gameID");
             }
+            res.status(200);
             return bank;
         }, json());
 
@@ -126,7 +131,7 @@ public class BankController {
         //===========================================================
 
         get("/banks/:gameid/transfers/:transferid", (req, res) -> {
-            Transfer transfer = bankService.findTransfers(req.params(":gameid"),req.params(":transferid"));
+            Transfer transfer = bankService.findTransfers(req.params(":gameid"), req.params(":transferid"));
             if (transfer == null) {
                 res.status(400);
                 return new ResponseError(":( wrong transferID");
@@ -138,29 +143,89 @@ public class BankController {
         // Creates a new bank transfer
         //===========================================================
 
-        post("banks/:gameid/transfer/from/:from/to/:to/:amount", (req, res) -> {
-            String reason = res.body();
+//        post("banks/:gameid/transfer/from/:from/to/:to/:amount", (req, res) -> {
+//            String reason = req.body();
+//
+//            Bank bank = bankService.findBank(req.params(":gameid"));
+//            if (bank == null) {
+//                res.status(400);
+//                return new ResponseError(":( wrong gameID");
+//            }
+//            Transfer transfer = bankService.transferFromTo(req.params(":gameid"), req.params(":from"), req.params(":to"), req.params(":amount"), reason);
+//            if (transfer == null) {
+//                res.status(400);
+//                return new ResponseError(":( wrong transferID");
+//            }
+//            return transfer;
+//        }, json());
+//
+//        //===========================================================
+//        // Creates a new bank transfer from the bank itself
+//        //===========================================================
+//
+//        post("banks/:gameid/transfer/to/:to/:amount", (req, res) ->
+//                "ToDo", json()
+//        );
+//
+//        //===========================================================
+//        // creates a new bank transfer to the bank itself
+//        //===========================================================
+//        post("banks/:gameid/transfer/from/:from/:amount", (req, res) ->
+//                "ToDo", json()
+//        );
 
+
+        //===========================================================
+        // List of available players
+        //===========================================================
+
+        get("banks/:gameid/players", (req, res) -> {
             Bank bank = bankService.findBank(req.params(":gameid"));
             if (bank == null) {
                 res.status(400);
                 return new ResponseError(":( wrong gameID");
             }
-            Transfer transfer = bankService.transferFromTo(req.params(":gameid"),req.params(":from"), req.params(":to"), req.params(":amount"), reason);
-            if (transfer == null) {
-                res.status(400);
-                return new ResponseError(":( wrong transferID");
-            }
-            return transfer;
-        }, json());
+            HttpResponse<JsonNode> players = bankService.getPlayers(req.params(":gameid"));
+            return players;
+        });
 
-        //===========================================================
-        // Creates a new bank transfer from the bank itself
-        //===========================================================
-
-//        post("banks/:gameid/transfer/to/:to/:amount", (req,res) ->
+//        //===========================================================
+//        // Returns the saldo of the player
+//        //===========================================================
 //
+//        get("banks/:gameid/players/:playerid", (req, res) -> {
+//                    Bank bank = bankService.findBank(req.params(":gameid"));
+//                    if (bank == null) {
+//                        res.status(400);
+//                        return new ResponseError(":( wrong gameID");
+//                    }
+//
+//                    String r = "ToDo";
+//                    return r;
+//                }, json()
 //        );
+
+        //===========================================================
+        // Creates a bank account
+        //===========================================================
+
+        post("banks/:gameid/players", (req, res) -> {
+                    Bank bank = bankService.findBank(req.params(":gameid"));
+                    if (bank == null) {
+                        res.status(400);
+                        return new ResponseError(":( wrong gameID");
+                    }
+            String players = bankService.getPlayersString(req.params(":gameid"));
+
+            bank.addAccount(playersArray);
+
+                    String r = "ToDo";
+                    return r;
+
+                }, json()
+
+
+        );
 
 
     }

@@ -1,6 +1,7 @@
 package Bank.service;
 
 import Bank.model.Bank;
+import Player.model.Player;
 import Bank.model.Transfer;
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.JsonNode;
@@ -48,7 +49,7 @@ public class BankService {
     public Transfer findTransfers(String gameID, String transferID) {
 
         for (Transfer transfer : getTransfers(gameID)) {
-            if(transfer.getID().equals(transferID)) return transfer;
+            if (transfer.getID().equals(transferID)) return transfer;
         }
         return null;
     }
@@ -62,16 +63,27 @@ public class BankService {
         return transfer;
     }
 
-    public String getPlayers(String gameID) {
-        HttpResponse<JsonNode> players = null;
+    public HttpResponse<JsonNode> getPlayers(String gameID) {
+        HttpResponse<Player> players = null;
         try {
-            players = Unirest.get("http://localhost:4567/games" + gameID + "/players").asJson();
+            players = Unirest.get("http://localhost:4567/games" + gameID + "/players").asString();
+////           String gameGson = readUrl("http://0.0.0.0:4567/games/" + gameID);
+//            final Game game = gson.fromJson(gameGson, Game.class);
         } catch (UnirestException e) {
             e.printStackTrace();
         }
         if (players != null) {
-            return players.getBody().toString();
+            return players;
         }
         return null;
+    }
+
+    public String getPlayersString(String gameID) {
+
+        String players = Unirest.get("http://localhost:4567/games" + gameID + "/players").toString();
+////           String gameGson = readUrl("http://0.0.0.0:4567/games/" + gameID);
+//            final Game game = gson.fromJson(gameGson, Game.class);
+        return players;
+
     }
 }

@@ -1,6 +1,10 @@
 package Bank.model;
 
+import Player.model.Player;
+
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 
 /**
  schema:
@@ -16,14 +20,27 @@ import java.util.ArrayList;
 public class Bank {
     private String bankID;
     private ArrayList<Transfer> transfers = new ArrayList<>();
-//    private HashMap<String, Account> accounts = new LinkedHashMap<>();
+    private HashMap<String, Account> accounts = new LinkedHashMap<>();
 
     public Bank(String bankID) {
         this.bankID = bankID;
 
     }
 
+    public HashMap<String, Account> getAccounts() {
+        return accounts;
+    }
+
+    public void addAccounts(ArrayList<Player> players) {
+        for (Player player : players) {
+            Account account = new Account();
+            accounts.put(player.getPlayerID(), account);
+        }
+
+    }
+
     public ArrayList<Transfer> getTransfers() {
+
         return transfers;
     }
 

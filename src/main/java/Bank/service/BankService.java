@@ -66,7 +66,7 @@ public class BankService {
     public HttpResponse<JsonNode> getPlayers(String gameID) {
         HttpResponse<Player> players = null;
         try {
-            players = Unirest.get("http://localhost:4567/games" + gameID + "/players").asString();
+            players = Unirest.get("http://localhost:4567/games" + gameID + "/players");
 ////           String gameGson = readUrl("http://0.0.0.0:4567/games/" + gameID);
 //            final Game game = gson.fromJson(gameGson, Game.class);
         } catch (UnirestException e) {

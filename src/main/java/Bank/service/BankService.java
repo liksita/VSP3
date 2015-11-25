@@ -1,14 +1,17 @@
 package Bank.service;
 
 import Bank.model.Bank;
-import Player.model.Player;
 import Bank.model.Transfer;
+import Player.model.Player;
+import com.google.gson.Gson;
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
 
 import java.util.ArrayList;
+
+import static util.JsonUtil.readUrl;
 
 /**
  * Created by m on 24.11.15.
@@ -64,9 +67,9 @@ public class BankService {
     }
 
     public HttpResponse<JsonNode> getPlayers(String gameID) {
-        HttpResponse<Player> players = null;
+        HttpResponse<JsonNode> players = null;
         try {
-            players = Unirest.get("http://localhost:4567/games" + gameID + "/players");
+            players = Unirest.get("http://localhost:4567/games/" + gameID + "/players").asJson();
 ////           String gameGson = readUrl("http://0.0.0.0:4567/games/" + gameID);
 //            final Game game = gson.fromJson(gameGson, Game.class);
         } catch (UnirestException e) {
@@ -78,12 +81,15 @@ public class BankService {
         return null;
     }
 
-    public String getPlayersString(String gameID) {
+    public ArrayList<Player> getPlayersString(String gameID) throws Exception {
 
-        String players = Unirest.get("http://localhost:4567/games" + gameID + "/players").toString();
+//        GetRequest players = Unirest.get("http://localhost:4567/games" + "/" + gameID + "/players");
 ////           String gameGson = readUrl("http://0.0.0.0:4567/games/" + gameID);
 //            final Game game = gson.fromJson(gameGson, Game.class);
-        return players;
+        String playersGson = readUrl("http://0.0.0.0:4567/games/" + gameID + "/players");
+        Gson gson = new Gson();
+        ArrayList<Player> players = gson.fromJson(playersGson, ArrayList.class);
+        return  players;
 
     }
 }

@@ -3,13 +3,7 @@ package Bank.controller;
 import Bank.model.Bank;
 import Bank.model.Transfer;
 import Bank.service.BankService;
-import Player.model.Player;
-import com.mashape.unirest.http.HttpResponse;
-import com.mashape.unirest.http.JsonNode;
-import com.mashape.unirest.http.Unirest;
 import errors.ResponseError;
-
-import java.util.ArrayList;
 
 import static spark.Spark.*;
 import static util.JsonUtil.json;
@@ -95,15 +89,19 @@ public class BankController {
             // if game exists
 
 
-            String gamesStr = Unirest.get("http://localhost:4567/games" + gameID).toString();
-            if (!gamesStr.isEmpty()) {
-                return bankService.createBank(gameID);
-            }
+//            String gamesStr = Unirest.get("http://localhost:4567/games" + gameID).toString();
+//            if (!gamesStr.isEmpty()) {
+//                return bankService.createBank(gameID);
+//            }
+//
+//
+//            // if there is no such game
+//            res.status(400);
+//            return new ResponseError(":( wrong gameID");
+//        }, json());
 
+            return bankService.createBank(gameID);
 
-            // if there is no such game
-            res.status(400);
-            return new ResponseError(":( wrong gameID");
         }, json());
 
 
@@ -176,18 +174,18 @@ public class BankController {
 
 
         //===========================================================
-        // List of available players
+        // List of available players *
         //===========================================================
 
-        get("banks/:gameid/players", (req, res) -> {
-            Bank bank = bankService.findBank(req.params(":gameid"));
-            if (bank == null) {
-                res.status(400);
-                return new ResponseError(":( wrong gameID");
-            }
-            HttpResponse<JsonNode> players = bankService.getPlayers(req.params(":gameid"));
-            return players;
-        });
+//        get("banks/:gameid/players", (req, res) -> {
+//            Bank bank = bankService.findBank(req.params(":gameid"));
+//            if (bank == null) {
+//                res.status(400);
+//                return new ResponseError(":( wrong gameID");
+//            }
+//            HttpResponse<JsonNode> players = bankService.getPlayers(req.params(":gameid"));
+//            return players;
+//        });
 
 //        //===========================================================
 //        // Returns the saldo of the player
@@ -209,20 +207,26 @@ public class BankController {
         // Creates a bank account
         //===========================================================
 
-        post("banks/:gameid/players", (req, res) -> {
+        get("banks/:gameid/players", (req, res) -> {
                     Bank bank = bankService.findBank(req.params(":gameid"));
                     if (bank == null) {
                         res.status(400);
                         return new ResponseError(":( wrong gameID");
                     }
-            String players = bankService.getPlayersString(req.params(":gameid"));
+                    try {
+                        return bankService.getPlayersString(req.params(":gameid"));
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        return e;
+                    }
+                }
 
-            bank.addAccount(playersArray);
-
-                    String r = "ToDo";
-                    return r;
-
-                }, json()
+//            bank.addAccount(playersArray);
+//
+//                    String r = "ToDo";
+//                    return r;
+//
+//                }, json()
 
 
         );

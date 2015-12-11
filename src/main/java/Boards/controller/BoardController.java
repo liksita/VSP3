@@ -23,7 +23,7 @@ public class BoardController {
         // ...'s
         //===========================================================
         // returns all active games (both running and joinable)
-        get("/boards", (req, res) -> boardService.getGames(), json());
+        //get("/boards", (req, res) -> boardService.getGames(), json());
 
        /* // Benutzer können mit dem Client ein neues Spiel eröffnen
         post("/games", (req, res) -> {
